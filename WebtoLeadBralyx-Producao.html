@@ -19,23 +19,23 @@
     <input type=hidden select id="00NC0000005eh1g" name="00NC0000005eh1g" title="Origem do Contato*" value="Site" /><br>
 
     <label for="first_name">Primeiro Nome </label><input id="first_name" maxlength="40" name="first_name" size="20"
-        type="text" /><br>
+        type="text" required /><br>
 
     <label for="last_name">Sobrenome </label><input id="last_name" maxlength="80" name="last_name" size="20" type="text"
         required /><br>
 
-    <label for="phone">Telefone </label><input id="phone" maxlength="40" name="phone" size="20" type="text" /><br>
+    <label for="phone">Telefone </label><input id="phone" maxlength="40" name="phone" size="20" type="text" required /><br>
 
-    <label for="email">Email </label><input id="email" maxlength="80" name="email" size="20" type="text" /><br>
+    <label for="email">Email </label><input id="email" maxlength="80" name="email" size="20" type="text" required /><br>
 
-    Tipo de documento:<select id="tipoDocumento" name="Tipo_de_documento" title="Tipo de documento">
+    Tipo de documento:<select id="tipoDocumento" name="Tipo_de_documento" title="Tipo de documento" required>
         <option value="CPF">CPF</option>
         <option value="CNPJ">CNPJ</option>
     </select><br>
 
 
     <div style="display: none;">
-        <select id="countrySelect" name="country">
+        <select id="countrySelect" name="country" required>
             <option value="Afeganistao">Afeganistão</option>
             <option value="Africa do Sul">África do Sul</option>
             <option value="Albania">Albânia</option>
@@ -502,7 +502,7 @@
         <option value="263">🇿🇼 Zimbabwe (+263)</option>
     </select><br>
 
-    DDD <input id="00N80000003LBSe" name="00N80000003LBSe" size="20" type="text" /><br>
+    DDD <input id="00N80000003LBSe" name="00N80000003LBSe" size="20" type="text" required /><br>
 
     <script>
         function updateCountry() {
@@ -554,7 +554,7 @@
     <br>
 
 
-    Tipo de Culinária <select id="00NC0000006TXTp" name="00NC0000006TXTp" title=“Tipo de Culinária”>
+    Tipo de Culinária <select id="00NC0000006TXTp" name="00NC0000006TXTp" title=“Tipo de Culinária” required>
         <option value="">-- Nenhum --</option>
         <option value="Brasileiro">Brasileiro</option>
         <option value="Latino">Latino</option>
@@ -568,7 +568,7 @@
         <option value="Oceânico">Oceânico</option>
     </select><br>
 
-    Idioma de preferência <select id="00NSG000002NyNK" name="00NSG000002NyNK" title="Idioma de preferência">
+    Idioma de preferência <select id="00NSG000002NyNK" name="00NSG000002NyNK" title="Idioma de preferência" required>
         <option value="">-- Nenhum --</option>
         <option value="Português">Português</option>
         <option value="Inglês">Inglês</option>
@@ -584,7 +584,10 @@
     </div>
 
 
-    O que produz? <input id="00NC0000005SR45" maxlength="120" name="00NC0000005SR45" size="20" type="text" /><br>
+    <div id="producaoField" style="display:none;">
+        <label for="00NC0000005SR45">O que produz?</label>
+        <input id="00NC0000005SR45" maxlength="120" name="00NC0000005SR45" size="20" type="text" /><br>
+    </div>
 
     Mensagem: <input id="00NSG000002NyNL" maxlength="250" name="00NSG000002NyNL" size="20" type="text" /><br>
 
@@ -620,20 +623,26 @@
         // Chama a função ao carregar a página
         getUTMParams();
 
-// POSSUI PRODUÇÃO (SIM / NÃO)
+        // POSSUI PRODUÇÃO (SIM / NÃO) e O QUE PRODUZ
         document.addEventListener('DOMContentLoaded', function () {
             const simCheckbox = document.getElementById('00NSG000002NyNM');
             const naoCheckbox = document.getElementById('00NSG000002NyNM_no');
+            const producaoField = document.getElementById('producaoField');
 
-            simCheckbox.addEventListener('change', function () {
+            function toggleProducaoField() {
                 if (simCheckbox.checked) {
+                    producaoField.style.display = 'block';
                     naoCheckbox.checked = false;
+                } else {
+                    producaoField.style.display = 'none';
                 }
-            });
+            }
 
+            simCheckbox.addEventListener('change', toggleProducaoField);
             naoCheckbox.addEventListener('change', function () {
                 if (naoCheckbox.checked) {
                     simCheckbox.checked = false;
+                    producaoField.style.display = 'none';
                 }
             });
         });
