@@ -28,11 +28,11 @@
 
     <label for="email">Email </label><input id="email" maxlength="80" name="email" size="20" type="text" required /><br>
 
-    Tipo de documento:<select id="tipoDocumento" name="Tipo_de_documento" title="Tipo de documento" required>
+    <label for="tipoDocumento">Tipo de documento:</label>
+    <select id="tipoDocumento" name="Tipo_de_documento" title="Tipo de documento" required>
         <option value="CPF">CPF</option>
         <option value="CNPJ">CNPJ</option>
     </select><br>
-
 
     <div style="display: none;">
         <select id="countrySelect" name="country" required>
@@ -502,7 +502,8 @@
         <option value="263">🇿🇼 Zimbabwe (+263)</option>
     </select><br>
 
-    DDD <input id="00N80000003LBSe" name="00N80000003LBSe" size="20" type="text" required /><br>
+    <label for="00N80000003LBSe">DDD</label>
+    <input id="00N80000003LBSe" name="00N80000003LBSe" size="20" type="text" required /><br>
 
     <script>
         function updateCountry() {
@@ -647,6 +648,53 @@
             });
         });
 
+
+
+        // Quando for escolhido DDI que não o do Brasil, ocultar o campo estado e fixar como exterior, de forma oculta (não aparece para o usuário) 
+//Também oculta o campo tipo de documento. 
+
+function updateCountry() {
+            const ddiSelect = document.getElementById('00N80000003LBRN');
+            const estadoField = document.getElementById('stateSelect');
+            const estadoLabel = document.querySelector('label[for="state"]');
+            const tipoDocumentoField = document.getElementById('tipoDocumento');
+            const tipoDocumentoLabel = document.querySelector('label[for="tipoDocumento"]');
+            const dddField = document.getElementById('00N80000003LBSe');
+            const dddLabel = document.querySelector('label[for="00N80000003LBSe"]');
+
+            if (ddiSelect.value !== '55') {
+                // Se o DDI não for do Brasil, ocultar campos e fixar o estado como 'Exterior'
+                estadoField.value = 'EX';
+                estadoField.classList.add('hidden');
+                estadoLabel.classList.add('hidden');
+                tipoDocumentoField.classList.add('hidden');
+                tipoDocumentoLabel.classList.add('hidden');
+                dddField.classList.add('hidden');
+                dddLabel.classList.add('hidden');
+                dddField.required = false;
+            } else {
+                // Se o DDI for do Brasil, mostrar os campos
+                estadoField.classList.remove('hidden');
+                estadoLabel.classList.remove('hidden');
+                tipoDocumentoField.classList.remove('hidden');
+                tipoDocumentoLabel.classList.remove('hidden');
+                dddField.classList.remove('hidden');
+                dddLabel.classList.remove('hidden');
+                dddField.required = true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateCountry(); // Executar ao carregar a página
+            document.getElementById('00N80000003LBRN').addEventListener('change', updateCountry);
+        });
+
     </script>
 
 </form>
+
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
